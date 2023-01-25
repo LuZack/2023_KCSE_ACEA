@@ -16,13 +16,12 @@ import org.apache.commons.csv.CSVRecord;
 
 public class TailStatAnalyzer {
     public TailStatAnalyzer(Reader reader) {
-        String fileKey = Main.getPath().substring(Main.getPath().lastIndexOf("/"), Main.getPath().lastIndexOf("."));
-        System.out.println(fileKey);
+        String fileKey = Main.getPath().substring(Main.getPath().lastIndexOf("/")+1, Main.getPath().lastIndexOf("."));
         HashMap<Integer, Integer> tailStat = new HashMap<>();
         try {
             Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(reader);
-            File statFile = new File(System.getProperty("user.dir")+"/statistics/stat.csv");
-            File hashIndexFile = new File(System.getProperty("user.dir")+"/statistics/index.csv");
+            File statFile = new File(System.getProperty("user.dir")+"/statistics/stat_"+fileKey+".csv");
+            File hashIndexFile = new File(System.getProperty("user.dir")+"/statistics/index_"+fileKey+".csv");
             statFile.createNewFile();
             hashIndexFile.createNewFile();
             FileWriter statWriter = new FileWriter(statFile);
