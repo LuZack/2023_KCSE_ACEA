@@ -24,7 +24,8 @@ public class TailStatAnalyzer {
             hashIndexFile.createNewFile();
             FileWriter statWriter = new FileWriter(statFile);
             FileWriter hashIndexWriter = new FileWriter(hashIndexFile);
-
+            int recordSize = records.iterator().next().size();
+            int progressCount = 1;
             for (CSVRecord record : records) {
                 String hash = record.get(0);
                 int clusterSize = record.size()-1;
@@ -40,13 +41,14 @@ public class TailStatAnalyzer {
                             changeMiner.setProperties(path, commitMiner.getRepo(), "JAVA", "GUMTREE");
                             String clusterTitle = changeMiner.collect(path, project_commit_path[2], commitMiner.getCommit(path,project_commit_path[1]), commitMiner.getRepo());
                             if (clusterTitle.length() > 10) {
-                                statWriter.write(hash + " " + clusterTitle+ "\n");
+                                hashIndexWriter.write(hash + " " + clusterTitle+ "\n");
 
                                 int tail_length = clusterTitle.split("|").length;
                                 if (tailStat.get(tail_length) == null)
                                     tailStat.put(tail_length,clusterSize);
                                 else
                                     tailStat.put(tail_length, tailStat.get(tail_length)+clusterSize);
+                                System.out.println(progressCount/recordSize*100 + "% done");
                                 break;
                             }
                         }
@@ -61,7 +63,7 @@ public class TailStatAnalyzer {
                 if (tailStat.get(j) == null)
                     continue;
 
-                hashIndexWriter.write(j + "," +tailStat.get(j) +"\n");
+                statWriter.write(j + "," +tailStat.get(j) +"\n");
             }
         } catch (Exception e) {
             e.printStackTrace();
