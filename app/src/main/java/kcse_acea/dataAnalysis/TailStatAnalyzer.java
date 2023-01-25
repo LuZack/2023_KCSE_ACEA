@@ -31,9 +31,9 @@ public class TailStatAnalyzer {
             hashIndexFile.createNewFile();
             FileWriter statWriter = new FileWriter(statFile);
             FileWriter hashIndexWriter = new FileWriter(hashIndexFile);
-            int recordSize = records.size();
+            float recordSize = records.size();
 
-            int progressCount = 1;
+            float progressCount = 1;
             for (CSVRecord record : records) {
                 String hash = record.get(0);
                 int clusterSize = record.size()-1;
@@ -56,7 +56,7 @@ public class TailStatAnalyzer {
                                     tailStat.put(tail_length,clusterSize);
                                 else
                                     tailStat.put(tail_length, tailStat.get(tail_length)+clusterSize);
-                                System.out.println(100*(progressCount/recordSize) + "% done :" + progressCount++ + "/" + recordSize);
+                                System.out.println(100*(progressCount/recordSize) + "% done :" + (int)progressCount++ + "/" + (int)recordSize);
                                 break;
                             }
                         }
