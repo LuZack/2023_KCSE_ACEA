@@ -64,14 +64,19 @@ public class TailStatAnalyzer {
                     }
 
                 }
-
             }
+            hashIndexWriter.flush();
+            hashIndexWriter.close();
+
             for (int j = 1; j <= tailStat.size(); j++) {
-                if (tailStat.get(j) == null)
+                if (!tailStat.keySet().contains(j) || tailStat.get(j) == null)
                     continue;
 
                 statWriter.write(j + "," +tailStat.get(j) +"\n");
             }
+            statWriter.flush();
+            statWriter.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
