@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import kcse_acea.change.ChangeData;
 import kcse_acea.diffTool.GumTreeRunner;
@@ -14,7 +15,7 @@ import org.apache.commons.csv.CSVRecord;
 
 public class TailStatAnalyzer {
     public TailStatAnalyzer(Reader reader) {
-        ArrayList<Integer> tailStat = new ArrayList<>();
+        HashMap<Integer, Integer> tailStat = new HashMap<>();
         try {
             Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(reader);
             File statFile = new File(System.getProperty("user.dir")+"/statistics/stat.csv");
@@ -42,9 +43,9 @@ public class TailStatAnalyzer {
 
                             int tail_length = clusterTitle.split("|").length;
                             if (tailStat.get(tail_length) == null)
-                                tailStat.add(tail_length,clusterSize);
+                                tailStat.put(tail_length,clusterSize);
                             else
-                                tailStat.set(tail_length, tailStat.get(tail_length)+clusterSize);
+                                tailStat.put(tail_length, tailStat.get(tail_length)+clusterSize);
                             break;
                         }
                     }
