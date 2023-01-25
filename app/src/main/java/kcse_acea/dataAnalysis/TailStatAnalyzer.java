@@ -50,7 +50,7 @@ public class TailStatAnalyzer {
                                     tailStat.put(tail_length,clusterSize);
                                 else
                                     tailStat.put(tail_length, tailStat.get(tail_length)+clusterSize);
-                                System.out.println(progressCount/recordSize*100 + "% done");
+                                System.out.println(progressCount++/recordSize*100 + "% done :" + progressCount + "/" + recordSize);
                                 break;
                             }
                         }
