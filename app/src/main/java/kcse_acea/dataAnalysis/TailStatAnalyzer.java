@@ -30,25 +30,30 @@ public class TailStatAnalyzer {
                 int clusterSize = record.size()-1;
                 int count = 0;
                 for (String content: record.toList()) {
-                    if (count++ != 0) {
-                        String [] project_commit_path = content.split("&");
-                        String [] company_project = project_commit_path[0].split("~");
-                        String path = company_project[0] + "/" + company_project[1];
-                        CommitMiner commitMiner = new CommitMiner(path, true);
-                        ChangeMiner changeMiner = new ChangeMiner();
-                        changeMiner.setProperties(path, commitMiner.getRepo(), "JAVA", "GUMTREE");
-                        String clusterTitle = changeMiner.collect(path, project_commit_path[2], commitMiner.getCommit(path,project_commit_path[1]), commitMiner.getRepo());
-                        if (clusterTitle.length() > 10) {
-                            statWriter.write(hash + " " + clusterTitle+ "\n");
+                    try {
+                        if (count++ != 0) {
+                            String [] project_commit_path = content.split("&");
+                            String [] company_project = project_commit_path[0].split("~");
+                            String path = company_project[0] + "/" + company_project[1];
+                            CommitMiner commitMiner = new CommitMiner(path, true);
+                            ChangeMiner changeMiner = new ChangeMiner();
+                            changeMiner.setProperties(path, commitMiner.getRepo(), "JAVA", "GUMTREE");
+                            String clusterTitle = changeMiner.collect(path, project_commit_path[2], commitMiner.getCommit(path,project_commit_path[1]), commitMiner.getRepo());
+                            if (clusterTitle.length() > 10) {
+                                statWriter.write(hash + " " + clusterTitle+ "\n");
 
-                            int tail_length = clusterTitle.split("|").length;
-                            if (tailStat.get(tail_length) == null)
-                                tailStat.put(tail_length,clusterSize);
-                            else
-                                tailStat.put(tail_length, tailStat.get(tail_length)+clusterSize);
-                            break;
+                                int tail_length = clusterTitle.split("|").length;
+                                if (tailStat.get(tail_length) == null)
+                                    tailStat.put(tail_length,clusterSize);
+                                else
+                                    tailStat.put(tail_length, tailStat.get(tail_length)+clusterSize);
+                                break;
+                            }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
                 }
 
             }
