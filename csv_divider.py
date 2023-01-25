@@ -8,12 +8,10 @@ def main():
             sys.exit()
     if sys.argv[1] == '-m':
         with open(sys.argv[2],'w') as output:
-            for i in range(3, int(len(sys.argv))+1):
+            for i in range(3, int(len(sys.argv))):
                 with open(sys.argv[i],'r') as csv:
                     lines = csv.readlines()
                     output.writelines(lines)
-            
-            
             sys.exit()
     if len(sys.argv) != 4 and (sys.argv[1] != '-m' or sys.argv[1] != '-t'):
         print('Usage: csv_divider.py [option] <input_path> <output_path> <number_of_files>')
