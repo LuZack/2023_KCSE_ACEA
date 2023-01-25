@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import kcse_acea.Main;
@@ -26,7 +27,7 @@ public class TailStatAnalyzer {
             hashIndexFile.createNewFile();
             FileWriter statWriter = new FileWriter(statFile);
             FileWriter hashIndexWriter = new FileWriter(hashIndexFile);
-            int recordSize = records.iterator().next().size();
+            int recordSize = ((Collection<?>) records).size();
             int progressCount = 1;
             for (CSVRecord record : records) {
                 String hash = record.get(0);
