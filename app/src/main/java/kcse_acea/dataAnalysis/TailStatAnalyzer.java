@@ -1,7 +1,9 @@
 package kcse_acea.dataAnalysis;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.Reader;
+import java.util.ArrayList;
 
 import kcse_acea.change.ChangeData;
 import kcse_acea.diffTool.GumTreeRunner;
@@ -12,10 +14,18 @@ import org.apache.commons.csv.CSVRecord;
 
 public class TailStatAnalyzer {
     public TailStatAnalyzer(Reader reader) {
+        ArrayList<Integer> tailStat = new ArrayList<>();
         try {
             Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(reader);
+            File statFile = new File(System.getProperty("user.dir")+"/statistics/stat.csv");
+            File hashIndexFile = new File(System.getProperty("user.dir")+"/statistics/index.csv");
+            statFile.createNewFile();
+            hashIndexFile.createNewFile();
+            FileWriter statWriter = new FileWriter(statFile);
+            FileWriter hashIndexWriter = new FileWriter(hashIndexFile);
+
             for (CSVRecord record : records) {
-                String Hash = record.get(0);
+                String hash = record.get(0);
                 int clusterSize = record.size()-1;
                 int count = 0;
                 for (String content: record.toList()) {
@@ -27,10 +37,25 @@ public class TailStatAnalyzer {
                         ChangeMiner changeMiner = new ChangeMiner();
                         changeMiner.setProperties(path, commitMiner.getRepo(), "JAVA", "GUMTREE");
                         String clusterTitle = changeMiner.collect(path, project_commit_path[2], commitMiner.getCommit(path,project_commit_path[1]), commitMiner.getRepo());
-                        System.out.println(clusterTitle);
+                        if (clusterTitle.length() > 10) {
+                            statWriter.write(hash + " " + clusterTitle+ "\n");
+
+                            int tail_length = clusterTitle.split("|").length;
+                            if (tailStat.get(tail_length) == null)
+                                tailStat.add(tail_length,clusterSize);
+                            else
+                                tailStat.set(tail_length, tailStat.get(tail_length)+clusterSize);
+                            break;
+                        }
                     }
                 }
 
+            }
+            for (int j = 1; j <= tailStat.size(); j++) {
+                if (tailStat.get(j) == null)
+                    continue;
+
+                hashIndexWriter.write(j + "," +tailStat.get(j) +"\n");
             }
         } catch (Exception e) {
             e.printStackTrace();
