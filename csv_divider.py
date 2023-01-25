@@ -2,16 +2,17 @@
 import sys
 
 def main():
+    if sys.argv[1] == '-t':
+        with open(sys.argv[1],'r') as csv:
+            print(len(csv.readlines()))
+            sys.exit()
     if len(sys.argv) != 4:
         print('Usage: csv_divider.py [option] <input_path> <output_path> <number_of_files>')
         print('option: -d divide csv file into n files')
         print('option: -t test')
         sys.exit(1)
     
-    if sys.argv[1] == '-t':
-        with open(sys.argv[1],'r') as csv:
-            print(len(csv.readlines()))
-            sys.exit()
+    
     with open(sys.argv[1],'r') as csv:
         lines = csv.readlines()
         size = len(lines)
