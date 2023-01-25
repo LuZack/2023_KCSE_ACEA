@@ -13,6 +13,7 @@ import kcse_acea.change.ChangeData;
 import kcse_acea.diffTool.GumTreeRunner;
 import kcse_acea.miners.ChangeMiner;
 import kcse_acea.miners.CommitMiner;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
@@ -28,8 +29,7 @@ public class TailStatAnalyzer {
             hashIndexFile.createNewFile();
             FileWriter statWriter = new FileWriter(statFile);
             FileWriter hashIndexWriter = new FileWriter(hashIndexFile);
-//            int recordSize = Iterables.size(records);
-		int recordSize = 0;
+            int recordSize = IterableUtils.size(records);
             int progressCount = 1;
             for (CSVRecord record : records) {
                 String hash = record.get(0);
