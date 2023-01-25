@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.stream.StreamSupport;
 
 import com.google.common.collect.Iterables;
 import kcse_acea.Main;
@@ -29,10 +30,8 @@ public class TailStatAnalyzer {
             hashIndexFile.createNewFile();
             FileWriter statWriter = new FileWriter(statFile);
             FileWriter hashIndexWriter = new FileWriter(hashIndexFile);
-            int recordSize = 0;
-            for (CSVRecord record : records) {
-                recordSize++;
-            }
+            long recordSize = StreamSupport.stream(records.spliterator(), false).count();;
+
             int progressCount = 1;
             for (CSVRecord record : records) {
                 String hash = record.get(0);
