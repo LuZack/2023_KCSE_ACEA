@@ -47,5 +47,7 @@ public class Main {
 
     }
 
+    public static String getPath() { return path;}
+
 
 }

@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import kcse_acea.Main;
 import kcse_acea.change.ChangeData;
 import kcse_acea.diffTool.GumTreeRunner;
 import kcse_acea.miners.ChangeMiner;
@@ -15,6 +16,8 @@ import org.apache.commons.csv.CSVRecord;
 
 public class TailStatAnalyzer {
     public TailStatAnalyzer(Reader reader) {
+        String fileKey = Main.getPath().substring(Main.getPath().lastIndexOf("/"), Main.getPath().lastIndexOf("."));
+        System.out.println(fileKey);
         HashMap<Integer, Integer> tailStat = new HashMap<>();
         try {
             Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(reader);
