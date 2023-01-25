@@ -2,8 +2,8 @@
 import sys
 
 def main():
-    if sys.argv[2] == '-t':
-        with open(sys.argv[3],'r') as csv:
+    if sys.argv[1] == '-t':
+        with open(sys.argv[2],'r') as csv:
             print(len(csv.readlines()))
             sys.exit()
     if len(sys.argv) != 4:
@@ -13,18 +13,18 @@ def main():
         sys.exit(1)
     
     
-    with open(sys.argv[2],'r') as csv:
+    with open(sys.argv[1],'r') as csv:
         tmp = []
         lines = csv.readlines()
         size = len(lines)
-        divisor = int(len(lines)/int(sys.argv[4]))
+        divisor = int(len(lines)/int(sys.argv[3]))
         j = 0
         k = 1
         for i in range(0, size):
             tmp.append(lines[i])
             if j > divisor or i == size -1:
                 j = 0
-                with open(sys.argv[3] + '_' + str(k) + '.csv', 'w') as output:
+                with open(sys.argv[2] + '_' + str(k) + '.csv', 'w') as output:
                     output.writelines(lines)
                     tmp = []
                     k += 1
