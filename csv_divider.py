@@ -11,7 +11,7 @@ def main():
             for i in range(1, int(sys.argv[4])+1):
                 with open(sys.argv[i],'r') as csv:
                     lines = csv.readlines()
-                    output.writelines(line +'\n' for line in lines)
+                    output.writelines(lines)
             
             
             sys.exit()
@@ -34,7 +34,7 @@ def main():
             if j > divisor or i == size -1:
                 j = 0
                 with open(sys.argv[2] + '_' + str(k) + '.csv', 'w') as output:
-                    output.writelines(line +'\n' for line in tmp)
+                    output.writelines(tmp)
                     tmp = []
                     k += 1
             
