@@ -7,8 +7,8 @@ def main():
             print(len(csv.readlines()))
             sys.exit()
     if sys.argv[1] == '-m':
-        with open(sys.argv[3],'w') as output:
-            for i in range(1, int(sys.argv[4])+1):
+        with open(sys.argv[2],'w') as output:
+            for i in range(3, int(len(sys.argv))+1):
                 with open(sys.argv[i],'r') as csv:
                     lines = csv.readlines()
                     output.writelines(lines)
