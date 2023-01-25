@@ -30,7 +30,7 @@ public class TailStatAnalyzer {
             hashIndexFile.createNewFile();
             FileWriter statWriter = new FileWriter(statFile);
             FileWriter hashIndexWriter = new FileWriter(hashIndexFile);
-            long recordSize = StreamSupport.stream(records.spliterator(), false).count();;
+            long recordSize = 1;
 
             int progressCount = 1;
             for (CSVRecord record : records) {
