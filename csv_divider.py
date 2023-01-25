@@ -6,11 +6,11 @@ def main():
         with open(sys.argv[2],'r') as csv:
             print(len(csv.readlines()))
             sys.exit()
-    if len(sys.argv) != 4:
-        print('Usage: csv_divider.py [option] <input_path> <output_path> <number_of_files>')
-        print('option: -d divide csv file into n files')
-        print('option: -t test')
-        sys.exit(1)
+    # if len(sys.argv) != 4:
+    #     print('Usage: csv_divider.py [option] <input_path> <output_path> <number_of_files>')
+    #     print('option: -d divide csv file into n files')
+    #     print('option: -t test')
+    #     sys.exit(1)
     
     
     with open(sys.argv[1],'r') as csv:
