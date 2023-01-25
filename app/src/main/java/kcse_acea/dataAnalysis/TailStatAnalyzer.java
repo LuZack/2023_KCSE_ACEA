@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import com.google.common.collect.Iterables;
 import kcse_acea.Main;
 import kcse_acea.change.ChangeData;
 import kcse_acea.diffTool.GumTreeRunner;
@@ -27,7 +28,7 @@ public class TailStatAnalyzer {
             hashIndexFile.createNewFile();
             FileWriter statWriter = new FileWriter(statFile);
             FileWriter hashIndexWriter = new FileWriter(hashIndexFile);
-            int recordSize = ((Collection<?>) records).size();
+            int recordSize = Iterables.size(records);
             int progressCount = 1;
             for (CSVRecord record : records) {
                 String hash = record.get(0);
