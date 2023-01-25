@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 import com.google.common.collect.Iterables;
@@ -23,14 +24,14 @@ public class TailStatAnalyzer {
         String fileKey = Main.getPath().substring(Main.getPath().lastIndexOf("/")+1, Main.getPath().lastIndexOf("."));
         HashMap<Integer, Integer> tailStat = new HashMap<>();
         try {
-            Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(reader);
+            List<CSVRecord> records = CSVFormat.RFC4180.parse(reader).getRecords();
             File statFile = new File(System.getProperty("user.dir")+"/statistics/stat_"+fileKey+".csv");
             File hashIndexFile = new File(System.getProperty("user.dir")+"/statistics/index_"+fileKey+".csv");
             statFile.createNewFile();
             hashIndexFile.createNewFile();
             FileWriter statWriter = new FileWriter(statFile);
             FileWriter hashIndexWriter = new FileWriter(hashIndexFile);
-            long recordSize = 1;
+            int recordSize = records.size();
 
             int progressCount = 1;
             for (CSVRecord record : records) {
