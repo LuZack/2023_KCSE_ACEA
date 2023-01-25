@@ -28,7 +28,8 @@ public class TailStatAnalyzer {
             hashIndexFile.createNewFile();
             FileWriter statWriter = new FileWriter(statFile);
             FileWriter hashIndexWriter = new FileWriter(hashIndexFile);
-            int recordSize = Iterables.size(records);
+//            int recordSize = Iterables.size(records);
+		int recordSize = 0;
             int progressCount = 1;
             for (CSVRecord record : records) {
                 String hash = record.get(0);
