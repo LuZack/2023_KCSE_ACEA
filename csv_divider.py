@@ -3,7 +3,7 @@ import sys
 
 def main():
     if sys.argv[1] == '-t':
-        with open(sys.argv[1],'r') as csv:
+        with open(sys.argv[2],'r') as csv:
             print(len(csv.readlines()))
             sys.exit()
     if len(sys.argv) != 4:
