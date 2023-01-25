@@ -56,7 +56,7 @@ public class ChangeMiner {
                 ChangeData changeData = new ChangeData();
                 switch (DiffTool) {
                     default:
-                        GumTreeRunner gumtree = new GumTreeRunner("/data/clones/"+filePath, fileExtension, srcFileSource, dstFileSource);
+                        GumTreeRunner gumtree = new GumTreeRunner("/data/CGYW/clones/"+filePath, fileExtension, srcFileSource, dstFileSource);
                         changeData = gumtree.constructChange(changeData);
                 }
                 return changeData.getActions();
