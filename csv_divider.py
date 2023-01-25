@@ -6,9 +6,18 @@ def main():
         with open(sys.argv[2],'r') as csv:
             print(len(csv.readlines()))
             sys.exit()
-    if len(sys.argv) != 4:
+    if sys.argv[1] == '-m':
+        with open(sys.argv[3],'w') as output:
+            for i in range(1, int(sys.argv[4])+1):
+                with open(sys.argv[i],'r') as csv:
+                    lines = csv.readlines()
+                    output.writelines(line +'\n' for line in lines)
+            
+            
+            sys.exit()
+    if len(sys.argv) != 4 and (sys.argv[1] != '-m' or sys.argv[1] != '-t'):
         print('Usage: csv_divider.py [option] <input_path> <output_path> <number_of_files>')
-        print('option: -d divide csv file into n files')
+        print('option: -m merge csv file into n files')
         print('option: -t test')
         sys.exit(1)
     
@@ -25,7 +34,7 @@ def main():
             if j > divisor or i == size -1:
                 j = 0
                 with open(sys.argv[2] + '_' + str(k) + '.csv', 'w') as output:
-                    output.writelines(tmp)
+                    output.writelines(line +'\n' for line in tmp)
                     tmp = []
                     k += 1
             
