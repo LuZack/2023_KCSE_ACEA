@@ -25,7 +25,7 @@ def main():
             if j > divisor or i == size -1:
                 j = 0
                 with open(sys.argv[2] + '_' + str(k) + '.csv', 'w') as output:
-                    output.writelines(lines)
+                    output.writelines(tmp)
                     tmp = []
                     k += 1
             
