@@ -15,20 +15,25 @@ def main():
             sys.exit()
     if sys.argv[1] == '-n':
         map = dict()
-        with open(sys.argv[2],'r') as csv:
-            while True:
-                line = csv.readline()
-                if not line:
-                    break
-                tailLength_num = line.split(',')
-                if tailLength_num[0] in map:
-                    map[tailLength_num[0]] += int(tailLength_num[1])
-                else:
-                    map[tailLength_num[0]] = int(tailLength_num[1])
-        with open(sys.argv[3],'w') as output:
-            for i in range(4, int(len(sys.argv))):
-                for key in map:
-                    output.write(key + ',' + str(map[key]) + '\n')
+        for i in range(3, int(len(sys.argv))):
+            f = open(sys.argv[i], 'r')
+            size = f.readlines()
+            f.close()
+            with open(sys.argv[i],'r') as csv:
+                for j in range (0, len(size)):
+                    line = size[j]
+                    if len(line) < 3:
+                        continue
+                    
+                    tailLength_num = line.split(',')
+                    print(tailLength_num[0])
+                    if tailLength_num[0] in map:
+                        map[tailLength_num[0]] += int(tailLength_num[1])
+                    else:
+                        map[tailLength_num[0]] = int(tailLength_num[1])
+        with open(sys.argv[2],'w') as output:
+            for key in map:
+                output.write(key + ',' + str(map[key]) + '\n')
             
                 
             sys.exit()
