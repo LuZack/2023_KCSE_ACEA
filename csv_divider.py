@@ -1,6 +1,8 @@
 import csv
 import sys
 
+csv.field_size_limit(sys.maxsize)
+
 def main():
     if sys.argv[1] == '-t':
         with open(sys.argv[2],'r') as file:
@@ -37,9 +39,15 @@ def main():
         sys.exit()
     if sys.argv[1] == '-l':
         output = open(sys.argv[3], 'w')
+        discard = 0
         with open(sys.argv[2],'r') as file:
             csvreader = csv.reader(file, delimiter=' ')
             for row in csvreader:
+                if len(row) < 2:
+                    discard += 1
+                    print("Discard #" + str(discard))
+                    print(row)
+                    continue
                 editscript = row[1].split('|')
                 for i in range(0, len(editscript)):
                     if editscript[i] == '':
