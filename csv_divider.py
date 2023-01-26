@@ -1,4 +1,4 @@
-
+import csv
 import sys
 
 def main():
@@ -34,13 +34,25 @@ def main():
         with open(sys.argv[2],'w') as output:
             for key in map:
                 output.write(key + ',' + str(map[key]) + '\n')
-            
-                
-            sys.exit()
+        sys.exit()
+    if sys.argv[1] == '-l':
+        output = open(sys.argv[3], 'w')
+        with open(sys.argv[2],'r') as csv:
+            csvreader = csv.reader(csv)
+            for row in csvreader:
+                lst = row.split(',')
+                editscript = lst[1].split('|')
+                print(lst[1] + ": " + len(editscript))
+                output.write(lst[0] + "," + str(len(editscript)) + '\n')
+                print(lst[0] + "," + str(len(editscript)))
+        output.close()
+        sys.exit()
+    
     if len(sys.argv) != 4 and (sys.argv[1] != '-m' or sys.argv[1] != '-t'):
         print('Usage: csv_divider.py [option] <input_path> <output_path> <number_of_files>')
         print('option: -m merge csv file into n files')
         print('option: -t test')
+        print('option: -l calculate the length of each tail')
         sys.exit(1)
     
     
