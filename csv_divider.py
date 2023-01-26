@@ -13,6 +13,25 @@ def main():
                     lines = csv.readlines()
                     output.writelines(lines)
             sys.exit()
+    if sys.argv[1] == '-n':
+        map = dict()
+        with open(sys.argv[2],'r') as csv:
+            while True:
+                line = csv.readline()
+                if not line:
+                    break
+                tailLength_num = line.split(',')
+                if tailLength_num[0] in map:
+                    map[tailLength_num[0]] += int(tailLength_num[1])
+                else:
+                    map[tailLength_num[0]] = int(tailLength_num[1])
+        with open(sys.argv[3],'w') as output:
+            for i in range(4, int(len(sys.argv))):
+                for key in map:
+                    output.write(key + ',' + str(map[key]) + '\n')
+            
+                
+            sys.exit()
     if len(sys.argv) != 4 and (sys.argv[1] != '-m' or sys.argv[1] != '-t'):
         print('Usage: csv_divider.py [option] <input_path> <output_path> <number_of_files>')
         print('option: -m merge csv file into n files')
