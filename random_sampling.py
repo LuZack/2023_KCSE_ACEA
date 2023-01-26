@@ -77,9 +77,13 @@ def main():
     if len(sys.argv) != 5 and (sys.argv[1] != '-m'):
         print('Usage: random_sampling.py [option] <hash_cv_path> <hash_len_path> <output_path> <number_of_sample>')
         print('option: -m merge data of hash_cv and hash_len into one output file')
+        print('hash_cv_path: path to file which contains pair of hash and change vector')
+        print('hash_len_path: path to file which contains pair of hash and length of change vector(output of csv_divider.py with option -l)')
         print('output_path: path to output directory')
         print('L short change vector will be saved as short_sample.csv in output_path')
         print('L long change vector will be saved as long_sample.csv in output_path')
+        print ('number_of_sample: number of total sample to be taken')
+        print('L e.g. 1000 will take random 500 short and 500 long change vectors')
         sys.exit(1)
 
 if __name__ == '__main__':
