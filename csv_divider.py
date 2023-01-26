@@ -3,14 +3,14 @@ import sys
 
 def main():
     if sys.argv[1] == '-t':
-        with open(sys.argv[2],'r') as csv:
-            print(len(csv.readlines()))
+        with open(sys.argv[2],'r') as file:
+            print(len(file.readlines()))
             sys.exit()
     if sys.argv[1] == '-m':
         with open(sys.argv[2],'w') as output:
             for i in range(3, int(len(sys.argv))):
-                with open(sys.argv[i],'r') as csv:
-                    lines = csv.readlines()
+                with open(sys.argv[i],'r') as file:
+                    lines = file.readlines()
                     output.writelines(lines)
             sys.exit()
     if sys.argv[1] == '-n':
@@ -19,7 +19,7 @@ def main():
             f = open(sys.argv[i], 'r')
             size = f.readlines()
             f.close()
-            with open(sys.argv[i],'r') as csv:
+            with open(sys.argv[i],'r') as file:
                 for j in range (0, len(size)):
                     line = size[j]
                     if len(line) < 3:
@@ -37,14 +37,15 @@ def main():
         sys.exit()
     if sys.argv[1] == '-l':
         output = open(sys.argv[3], 'w')
-        with open(sys.argv[2],'r') as csv:
-            csvreader = csv.reader(csv)
+        with open(sys.argv[2],'r') as file:
+            csvreader = csv.reader(file, delimiter=' ')
             for row in csvreader:
-                lst = row.split(',')
-                editscript = lst[1].split('|')
-                print(lst[1] + ": " + len(editscript))
-                output.write(lst[0] + "," + str(len(editscript)) + '\n')
-                print(lst[0] + "," + str(len(editscript)))
+                editscript = row[1].split('|')
+                for i in range(0, len(editscript)):
+                    if editscript[i] == '':
+                        del editscript[i]
+                #print(row[0] + ": " + str(len(editscript)))
+                output.write(row[0] + "," + str(len(editscript)) + '\n')
         output.close()
         sys.exit()
     
@@ -56,9 +57,9 @@ def main():
         sys.exit(1)
     
     
-    with open(sys.argv[1],'r') as csv:
+    with open(sys.argv[1],'r') as file:
         tmp = []
-        lines = csv.readlines()
+        lines = file.readlines()
         size = len(lines)
         divisor = int(len(lines)/int(sys.argv[3]))
         j = 0
