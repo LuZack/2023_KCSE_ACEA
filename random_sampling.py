@@ -4,17 +4,24 @@ import sys
 import os
 
 # cv = change vector
-short_cv = int(500)
-long_cv = int(1000)
+short_cv = int('''length of short change vectors''')
+long_cv = int('''length of long change vectors''')
 
 csv.field_size_limit(sys.maxsize)
 
 def main():
     if sys.argv[1] == '-m':
         # mapping hash to length
-        # map: key = length, value = list of hashes
+        # dict: key = length, value = list of hashes
+        '''
+        short_map has change vectors where the length of each change vector is less than or equal to short_cv
+        '''
         short_map = dict()
+        '''
+        long_map has change vectors where the length of each change vector is biger than or equal to long_cv
+        '''
         long_map = dict()
+
         # dict: key = hash, value = length
         total_data = dict()
         hash_len_file = open(sys.argv[3], 'r')
@@ -39,7 +46,6 @@ def main():
         hash_len_file.close()
 
         # random sampling
-        # range: short = 1 to short_cv, long = long_cv to max(len of cv)
         num = int(int(sys.argv[5])/2)
         print('Processing ' + str(num) + ' short sample change vectors...')
         short_key = random.sample(list(short_map.keys()), num)
