@@ -1,10 +1,11 @@
 import random
 import csv
 import sys
+import os
 
 # cv = change vector
-short_cv = int('''length of short cv''')
-long_cv = int('''length of long cv''')
+short_cv = int(500)
+long_cv = int(1000)
 
 csv.field_size_limit(sys.maxsize)
 
@@ -12,63 +13,70 @@ def main():
     if sys.argv[1] == '-m':
         # mapping hash to length
         # map: key = length, value = list of hashes
-        map = dict()
-        hash_len_file = open(sys.argv[2], 'r')
+        short_map = dict()
+        long_map = dict()
+        # dict: key = hash, value = length
+        total_data = dict()
+        hash_len_file = open(sys.argv[3], 'r')
         csvreader = csv.reader(hash_len_file, delimiter=',')
         for row in csvreader:
-            if row[1] not in map.keys():
+            if len(row) < 2:
+                continue
+            total_data[row[0]] = row[1]
+            if row[1] not in short_map.keys() and int(row[1]) <= short_cv:
                 new_list = list()
                 new_list.append(row[0])
-                map[row[1]] = new_list
-            else:
-                map[row[1]].append(row[0])
+                short_map[row[1]] = new_list
+            elif int(row[1]) <= short_cv:
+                short_map[row[1]].append(row[0])
+            elif row[1] not in long_map.keys() and int(row[1]) >= long_cv:
+                new_list = list()
+                new_list.append(row[0])
+                long_map[row[1]] = new_list
+            elif int(row[1]) >= long_cv:
+                long_map[row[1]].append(row[0])
+
         hash_len_file.close()
 
         # random sampling
         # range: short = 1 to short_cv, long = long_cv to max(len of cv)
-        num = int(sys.argv[4])/2
-        short_sample = []
-        is_all_sample_in_map = False
-        while not is_all_sample_in_map:
-            short_sample = random.sample(range(1, short_cv + 1), num)
-            num_of_sample_in_map = 0
-            for idx in short_sample:
-                if idx in map.keys():
-                    num_of_sample_in_map += 1
-            if num_of_sample_in_map == num:
-                is_all_sample_in_map = True
+        num = int(int(sys.argv[5])/2)
+        print('Processing ' + str(num) + ' short sample change vectors...')
+        short_key = random.sample(list(short_map.keys()), num)
+        short_sample = list()
+        for key in short_key:
+            short_sample.append(random.choice(short_map[key]))
 
-        num = sys.argv[4] - num
-        long_sample = []
-        is_all_sample_in_map = False
-        while not is_all_sample_in_map:
-            long_sample = random.sample(range(1, short_cv + 1), num)
-            num_of_sample_in_map = 0
-            for idx in long_sample:
-                if idx in map.keys():
-                    num_of_sample_in_map += 1
-            if num_of_sample_in_map == num:
-                is_all_sample_in_map = True
+        num = int(sys.argv[5]) - num
+        print('Processing ' + str(num) + ' long sample change vectors...')
+        long_key = random.sample(list(long_map.keys()), num)
+        long_sample = list()
+        for key in long_key:
+            long_sample.append(random.choice(long_map[key]))
 
         # write to output directory
+        print('Writing to output directory...')
         if sys.argv[4][-1] != '/':
             sys.argv[4] += '/'
+        if not os.path.exists(sys.argv[4]):
+            os.makedirs(sys.argv[4])
         short_output = open(sys.argv[4]+"short_sample.csv", 'w')
         long_output = open(sys.argv[4]+"long_sample.csv", 'w')
+
         with open(sys.argv[2],'r') as file:
             csvreader = csv.reader(file, delimiter=' ')
             for row in csvreader:
                 if len(row) < 2:
                     continue
-                for idx in short_sample:
-                    if row[0] in map[idx]:
+                for hash in short_sample:
+                    if row[0] == hash:
                         # row[0] = hash, idx = length, row[1] = change vector
-                        short_output.write(row[0] + ',' + idx + ',' + row[1])
+                        short_output.write(row[0] + ',' + total_data[row[0]] + ',' + row[1] + '\n')
                         break
-                for idx in long_sample:
-                    if row[0] in map[idx]:
+                for hash in long_sample:
+                    if row[0] == hash:
                         # row[0] = hash, idx = length, row[1] = change vector
-                        long_output.write(row[0] + ',' + idx + ',' + row[1])
+                        long_output.write(row[0] + ',' + total_data[row[0]] + ',' + row[1] + '\n')
                         break
         short_output.close()
         long_output.close()
