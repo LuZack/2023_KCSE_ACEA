@@ -4,8 +4,10 @@ import sys
 import os
 
 # cv = change vector
-short_cv = int('''length of short change vectors''')
-long_cv = int('''length of long change vectors''')
+short_cv = int(5)
+short_lim = int(1)
+long_cv = int(5)
+long_lim = int(30)
 
 csv.field_size_limit(sys.maxsize)
 
@@ -30,22 +32,24 @@ def main():
             if len(row) < 2:
                 continue
             total_data[row[0]] = row[1]
-            if row[1] not in short_map.keys() and int(row[1]) <= short_cv:
+            if row[1] not in short_map.keys() and int(row[1]) <= short_cv and int(row[1]) >= short_lim:
                 new_list = list()
                 new_list.append(row[0])
                 short_map[row[1]] = new_list
-            elif int(row[1]) <= short_cv:
+            elif int(row[1]) <= short_cv and int(row[1]) >= short_lim:
                 short_map[row[1]].append(row[0])
-            elif row[1] not in long_map.keys() and int(row[1]) >= long_cv:
+            elif row[1] not in long_map.keys() and int(row[1]) >= long_cv and int(row[1]) <= long_lim:
                 new_list = list()
                 new_list.append(row[0])
                 long_map[row[1]] = new_list
-            elif int(row[1]) >= long_cv:
+            elif int(row[1]) >= long_cv and int(row[1]) <= long_lim:
                 long_map[row[1]].append(row[0])
 
         hash_len_file.close()
 
-        # random sampling
+        # size configure
+        
+        # # random sampling
         num = int(int(sys.argv[5])/2)
         print('Processing ' + str(num) + ' short sample change vectors...')
         short_key = random.sample(list(short_map.keys()), num)
@@ -87,6 +91,42 @@ def main():
         short_output.close()
         long_output.close()
         sys.exit()
+    
+    if sys.argv[1] == '-c':
+        # dict: key = hash, value = length
+        total_data = dict()
+        hash_len_file = open(sys.argv[3], 'r')
+        csvreader = csv.reader(hash_len_file, delimiter=',')
+        for row in csvreader:
+            if len(row) < 2:
+                continue
+            total_data[row[0]] = row[1]
+        hash_len_file.close()
+        
+        real_data = dict()
+        tmp = []
+        with open(sys.argv[2],'r') as file:
+            csvreader = csv.reader(file, delimiter=',')
+            for row in csvreader:
+                if len(row) < 3:
+                    continue
+                if row[0] in total_data.keys():
+                    if int(total_data[row[0]]) == int(sys.argv[4]):
+                        
+                        for i in range(1, len(row)):
+                             tmp.append(row[i].replace('&', '\t'))
+                        real_data[row[0]] = tmp
+                        tmp = []
+            keys = random.sample(real_data.keys(), int(sys.argv[5]))
+            for key in keys:
+                print(key)
+                for i in range(len(real_data[key])):
+                    print(real_data[key][i])
+        
+        sys.exit()
+                    
+                    
+                
 
     if len(sys.argv) != 5 and (sys.argv[1] != '-m'):
         print('Usage: random_sampling.py [option] <hash_cv_path> <hash_len_path> <output_path> <number_of_sample>')
@@ -98,6 +138,7 @@ def main():
         print('L long change vector will be saved as long_sample.csv in output_path')
         print ('number_of_sample: number of total sample to be taken')
         print('L e.g. 1000 will take random 500 short and 500 long change vectors')
+        print('option: -c <java_result.csv> <hash_len> <size>')
         sys.exit(1)
 
 if __name__ == '__main__':
